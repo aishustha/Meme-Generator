@@ -11,30 +11,46 @@ import Boxes from "./boxes";
 
 function App() {
 
-  const [squares, setSquare] = React.useState(Boxes)
-  
-  function toggle(id) {
 
-    setSquare(prevSquare => {
-      return prevSquare.map((square) => {
-        return square.id === id ? {...square, on: !square.on} : square
-          
-      })
+
+  //forms
+
+  const [formData, setFormData] = React.useState(
+    {
+      firstName: "", 
+      lastName: "", 
+      email: "", comment: "", 
+      isFriendly: true,
+      employment: "",
+      favColor: ""
+  })
+
+  console.log(formData.favColor)
+    
+  
+  console.log(formData.comment)
+
+  function handleChange(event) {
+    const {name, value, type, checked} = event.target
+    setFormData(prevFormData => {
+      return {
+        ...prevFormData, 
+        [name]: type === "checkbox" ? checked : value
+      }
     })
+
   }
 
 
 
-  const squareElements =  squares.map(square => (
-    <Box key={square.id} on={square.on} toggle={() => toggle(square.id)}/>
-
-  ))
-
-
-
+  function handleSubmit(event) {
+    event.preventDefault()
+    //submitToApi(formData)
+    console.log(formData)
+  }
 
 
-  const [box, setBox] = React.useState(Boxes);
+
 
   //Boxes initial value
 
@@ -89,7 +105,110 @@ function App() {
       <Header name={user}/>
       <Form name={user}/>
 
-      {squareElements}
+
+      <form onSubmit={handleSubmit}>
+        <input
+          type='text'
+          placeholder='First Name'
+          onChange={handleChange}
+          name="firstName"
+          value={formData.firstName}
+        />
+
+      <input
+          type='text'
+          placeholder='Last Name'
+          onChange={handleChange}
+          name="lastName"
+          value={formData.lastName}
+        />
+
+      <input
+          type='text'
+          placeholder='Email'
+          onChange={handleChange}
+          name="email"
+          value={formData.email}
+        />
+
+        <textarea 
+        onChange={handleChange} 
+        name="comment" 
+        value={formData.comment}
+        placeholder='Comment'
+        />
+
+
+        <input type='checkbox' name='isFriendly' id="isFriendly" checked={formData.isFriendly} onChange={handleChange}/>
+        <label htmlFor="isFriendly">Are you friendly?</label>
+        <br/>
+
+
+        <fieldset>
+          <legend>Current Employment Status</legend>
+          <input
+            type="radio"
+            id="unemployed"
+            name="employment"
+            value="unemployed"
+            checked={formData.employment === "unemployed"}
+            onChange={handleChange}
+          />
+
+
+          <label htmlFor='unemployed'>Unemployed</label>
+          <br/>
+
+          <input
+            type='radio'
+            id="part-time"
+            name="employment"
+            value="part-time"
+            checked={formData.employment === "part-time"}
+            onChange={handleChange}
+          />
+          <label htmlFor='part-time'>Part-time</label>
+          <br/>
+
+          <input
+            type='radio'
+            id="full-time"
+            name="employment"
+            value="full-time"
+            checked={formData.employment === "full-time"}
+            onChange={handleChange}
+          />
+          <label htmlFor='full-time'>Full-time</label>
+          <br/>
+
+
+          <label htmlFor='favColor'>What is your favourite color?</label>
+          <br/>
+          <select 
+            id="favColor"
+            value={formData.favColor}
+            onChange={handleChange}
+            name="favColor"
+
+
+          >
+            <option value="--">--Choose--</option>
+            <option value="orange">Orange</option>
+            <option value="yellow">Yellow</option>
+            <option value="green">Green</option>
+            <option value="blue">Blue</option>
+            <option value="indigo">Indigo</option>
+            <option value="violet">Violet</option>
+          </select>
+
+
+          <br/>
+          <br/>
+
+          <button type="submit">Submit</button>
+        </fieldset>
+      </form>
+    
 
       {/* <main>
         <h1> Boxes will go here.</h1>

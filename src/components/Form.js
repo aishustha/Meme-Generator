@@ -22,6 +22,14 @@ export default function Form(props) {
     }
 
 
+    function handleChange(event) {
+        const {name, value} = event.target
+        setMeme(prevMeme => ({
+            ...prevMeme,
+            [name]: value
+        }))
+    }
+
     return (
         <main>
             <h1>Welcome Back, {props.name}</h1>
@@ -30,15 +38,25 @@ export default function Form(props) {
                     type="text"
                     placeholder="Top Text"
                     className="form--input"
+                    name="topText"
+                    value={meme.topText}
+                    onChange={handleChange}
                 />
                 <input 
                      type="text"
                      placeholder="Bottom Text"
                      className="form--input"
+                     name="bottomText"
+                     value={meme.bottomText}
+                     onChange={handleChange}
                 />
                 <button onClick={getMemeImage} className="form--button">Get a new meme image  🖼</button>
             </div>
-            <img src={meme.randomImage} className="meme--image"/>
+            <div className="meme">
+                <img src={meme.randomImage} className="meme--image"/>
+                <h2 className="meme--text top">{meme.topText}</h2>
+                <h2 className="meme--text bottom">{meme.bottomText}</h2>
+            </div>
         </main>
     )
 }
